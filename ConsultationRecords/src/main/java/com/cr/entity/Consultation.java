@@ -1,6 +1,6 @@
 package com.cr.entity;
 
-import com.appschl.entity.Appointment;
+import com.appointment.entity.Appointment;
 import jakarta.persistence.*;
 import lombok.*;
 import java.util.Map;
@@ -11,6 +11,7 @@ import java.util.HashMap;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+
 public class Consultation {
 
     @Id
@@ -21,6 +22,9 @@ public class Consultation {
     @OneToOne(optional = false)
     @JoinColumn(name = "appointment_id")
     private Appointment appointment;
+//    @Column(name = "follow_up")
+//    private boolean followUp;
+
 
     // Consultation notes (up to 2000 characters).
     @Column(length = 2000)

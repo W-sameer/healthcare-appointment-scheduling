@@ -3,7 +3,7 @@ package com.cr.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import com.cr.entity.Consultation;
-import com.appschl.entity.Appointment;
+import com.appointment.entity.Appointment;
 
 @Repository
 public interface ConsultationRepository extends JpaRepository<Consultation, Long> {

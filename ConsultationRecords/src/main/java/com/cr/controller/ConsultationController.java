@@ -3,6 +3,8 @@ package com.cr.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import com.cr.dto.ConsultationRequestDTO;
 import com.cr.entity.Consultation;
 import com.cr.service.ConsultationService;
 
@@ -20,7 +22,7 @@ public class ConsultationController {
     @PostMapping("/{appointmentId}")
     public ResponseEntity<Consultation> createConsultation(
             @PathVariable Long appointmentId,
-            @RequestBody Consultation consultationData) {
+            @RequestBody ConsultationRequestDTO consultationData) {
         Consultation created = consultationService.createConsultation(appointmentId, consultationData);
         return ResponseEntity.ok(created);
     }
@@ -46,4 +48,5 @@ public class ConsultationController {
         Consultation updated = consultationService.updateConsultation(consultationId, updatedData);
         return ResponseEntity.ok(updated);
     }
+
 }

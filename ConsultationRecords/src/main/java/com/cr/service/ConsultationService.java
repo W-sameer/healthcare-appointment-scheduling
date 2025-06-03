@@ -1,13 +1,16 @@
 package com.cr.service;
 
+import com.cr.dto.ConsultationRequestDTO;
 import com.cr.entity.Consultation;
 import com.cr.exception.ConsultationNotFoundException;
 import com.cr.repository.ConsultationRepository;
-import com.appschl.entity.Appointment;
-import com.appschl.repository.AppointmentRepository;
+import com.appointment.entity.Appointment;
+import com.appointment.repository.AppointmentRepository;
+
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ConsultationService {
@@ -18,7 +21,7 @@ public class ConsultationService {
     @Autowired
     private AppointmentRepository appointmentRepository;
     
-    public Consultation createConsultation(Long appointmentId, Consultation consultationData) {
+    public Consultation createConsultation(Long appointmentId, ConsultationRequestDTO consultationData) {
         Appointment appointment = appointmentRepository.findById(appointmentId)
             .orElseThrow(() -> new RuntimeException("Appointment not found with id " + appointmentId));
         
@@ -26,9 +29,14 @@ public class ConsultationService {
         if (consultationRepository.findByAppointment(appointment) != null) {
             throw new RuntimeException("A consultation record already exists for this appointment.");
         }
+        Consultation consultation = new Consultation();
         
-        consultationData.setAppointment(appointment);
-        return consultationRepository.saveAndFlush(consultationData);
+        //consultation.setConsultationId(appointmentId);
+        Optional<Appointment> tempAppointment  = appointmentRepository.findById(appointmentId);
+        consultation.setAppointment(tempAppointment.get());
+        consultation.setNotes(consultationData.getNotes());
+        consultation.setPrescription(consultationData.getPrescription());
+        return consultationRepository.saveAndFlush(consultation);
     }
     
     public Consultation getConsultationByAppointmentId(Long appointmentId) {
@@ -50,4 +58,6 @@ public class ConsultationService {
         consultation.setPrescription(updatedData.getPrescription());
         return consultationRepository.saveAndFlush(consultation);
     }
+
 }
+
