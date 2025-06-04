@@ -22,6 +22,6 @@ public class AppointmentRequestDTO {
     @JsonFormat(pattern = "HH:mm")
     private LocalTime appointmentTime;
     
-    private boolean followUp;
+   // private boolean followUp;
 }
 

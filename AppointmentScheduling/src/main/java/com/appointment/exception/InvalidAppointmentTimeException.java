@@ -5,7 +5,12 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.BAD_REQUEST)
 public class InvalidAppointmentTimeException extends RuntimeException {
-    public InvalidAppointmentTimeException(String message) {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public InvalidAppointmentTimeException(String message) {
         super(message);
     }
 }

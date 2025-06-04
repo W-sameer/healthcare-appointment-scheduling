@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import com.appointment.entity.WaitingAppointment;
 import com.example.demo.entity.Doctor;
 import com.example.demo.entity.Patient;
-import com.example.demo.entity.User;
+//import com.example.demo.entity.User;
 
 @Repository
 public interface WaitingAppointmentRepository extends JpaRepository<WaitingAppointment, Long> {

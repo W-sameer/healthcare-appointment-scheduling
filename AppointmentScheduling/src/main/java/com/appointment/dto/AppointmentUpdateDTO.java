@@ -9,5 +9,5 @@ public class AppointmentUpdateDTO {
     // Optional: only update if provided. Fields left null won’t change.
     private LocalDate appointmentDate;
     private LocalTime appointmentTime;
-    private Boolean followUp;
+    //private Boolean followUp;
 }

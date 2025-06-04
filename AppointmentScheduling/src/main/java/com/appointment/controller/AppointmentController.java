@@ -1,6 +1,5 @@
 package com.appointment.controller;
 
-//import java.time.LocalDate;
 import java.util.List;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.appointment.dto.AppointmentRequestDTO;
+import com.appointment.dto.AppointmentResponseDTO;
 import com.appointment.dto.AppointmentUpdateDTO;
 import com.appointment.dto.AvailabilityRequestDTO;
 import com.appointment.dto.AvailabilityResponseDTO;
@@ -23,47 +23,34 @@ public class AppointmentController {
     @Autowired
     private AppointmentService appointmentService;
     
-    // POST endpoint to book an appointment (or add to waiting list if slot is full).
+    // Book an appointment (or add to waiting list if slot is full).
     @PostMapping("/book")
     public ResponseEntity<BookingResult> bookAppointment(@Valid @RequestBody AppointmentRequestDTO request) {
-        java.time.LocalDateTime appointmentDateTime = request.getAppointmentDate().atTime(request.getAppointmentTime());
-        BookingResult result = appointmentService.bookOrWaitAppointment(
-                request.getPatientId(),
-                request.getDoctorId(),
-                appointmentDateTime,
-                request.isFollowUp());
+        BookingResult result = appointmentService.bookOrWaitAppointment(request);
         return ResponseEntity.ok(result);
     }
     
-    // PUT endpoint to partially update an appointment.
+    // Partially update an appointment.
     @PutMapping("/update/{appointmentId}")
     public ResponseEntity<Appointment> updateAppointment(@PathVariable Long appointmentId, @RequestBody AppointmentUpdateDTO updateDTO) {
         Appointment appointment = appointmentService.partialUpdateAppointment(appointmentId, updateDTO);
         return ResponseEntity.ok(appointment);
     }
     
-    // PUT endpoint to cancel an appointment and reassign waiting list if applicable.
+    // Cancel an appointment and reassign waiting list if applicable.
     @PutMapping("/cancel/{appointmentId}")
     public ResponseEntity<Appointment> cancelAppointment(@PathVariable Long appointmentId) {
         Appointment appointment = appointmentService.cancelAppointment(appointmentId);
         return ResponseEntity.ok(appointment);
     }
     
-    // GET endpoint to retrieve appointments by patient user ID.
     @GetMapping("/patient/{patientId}")
-    public ResponseEntity<List<Appointment>> getAppointmentsByPatient(@PathVariable Long patientId) {
-        List<Appointment> appointments = appointmentService.getAppointmentsByPatient(patientId);
-        return ResponseEntity.ok(appointments);
+    public ResponseEntity<List<AppointmentResponseDTO>> getAppointmentsByPatient(@PathVariable Long patientId) {
+        List<AppointmentResponseDTO> responseDTOs = appointmentService.getAppointmentResponseDTOsByPatient(patientId);
+        return ResponseEntity.ok(responseDTOs);
     }
     
-    // GET endpoint to retrieve appointments by doctor user ID.
-    @GetMapping("/doctor/{doctorId}")
-    public ResponseEntity<List<Appointment>> getAppointmentsByDoctor(@PathVariable Long doctorId) {
-        List<Appointment> appointments = appointmentService.getAppointmentsByDoctor(doctorId);
-        return ResponseEntity.ok(appointments);
-    }
-    
-     //GET endpoint to retrieve available time slots for a doctor on a specific date.
+     //Retrieve available time slots for a doctor on a specific date.
     @GetMapping("/availability")
     public ResponseEntity<AvailabilityResponseDTO> getAvailability(@RequestBody AvailabilityRequestDTO request) {
         AvailabilityResponseDTO response = appointmentService.getAvailability(

@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import lombok.Data;
 import com.example.demo.entity.Patient;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.example.demo.entity.Doctor;
 
 @Data
@@ -33,5 +34,7 @@ public class Appointment {
     @Enumerated(EnumType.STRING)
     private AppointmentStatus status;
     
+    @JsonIgnore
     private boolean followUp;
+
 }
