@@ -31,7 +31,7 @@ public class ConsultationService {
         }
         Consultation consultation = new Consultation();
         
-        //consultation.setConsultationId(appointmentId);
+        //consultation.setConsultationId(appointmentId;
         Optional<Appointment> tempAppointment  = appointmentRepository.findById(appointmentId);
         consultation.setAppointment(tempAppointment.get());
         consultation.setNotes(consultationData.getNotes());
